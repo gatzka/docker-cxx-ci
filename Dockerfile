@@ -14,6 +14,7 @@ RUN echo "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-13 main" >> /etc/a
 RUN echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-15 main" >> /etc/apt/sources.list.d/llvm.list
 
 RUN apt-get update -y && apt-get upgrade -y && apt-get install -y ninja-build valgrind git pkg-config doxygen g++-powerpc-linux-gnu g++-powerpc64-linux-gnu g++-arm-linux-gnueabihf g++-aarch64-linux-gnu gcc-riscv64-linux-gnu g++-riscv64-linux-gnu qemu-user curl unzip cmake
+
 RUN apt-get install -y clang-15 clang-13 clang-tidy-15 clang-tidy-13 clang-format-15 clang-format-13 clang-tools-13 gcc-12 g++-12 libgtest-dev googletest
 
 RUN mkdir ~/.ssh && echo "StrictHostKeyChecking no\n" >> ~/.ssh/config
