@@ -2,15 +2,9 @@ FROM ubuntu:24.04
 RUN apt-get update -y && apt-get install -y software-properties-common
 
 RUN apt-get install -y wget curl
-RUN wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | tee /etc/apt/trusted.gpg.d/apt.llvm.org.asc
 RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
 
 RUN echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ noble main' | tee /etc/apt/sources.list.d/kitware.list >/dev/null
-RUN echo "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-13 main" >> /etc/apt/sources.list.d/llvm.list
-
-RUN echo "deb http://apt.llvm.org/noble/ llvm-toolchain-noble main" >> /etc/apt/sources.list.d/llvm.list
-RUN echo "deb http://apt.llvm.org/noble/ llvm-toolchain-noble-17 main" >> /etc/apt/sources.list.d/llvm.list
-RUN echo "deb http://apt.llvm.org/noble/ llvm-toolchain-noble-18 main" >> /etc/apt/sources.list.d/llvm.list
 
 RUN apt-get update -y && apt-get upgrade -y
 RUN apt-get install -y gcc-arm-none-eabi
@@ -80,7 +74,12 @@ RUN apt-get install -y clang-tools-16
 RUN apt-get install -y clang-tools-17
 RUN apt-get install -y clang-tools-18
 
-RUN apt-get install -y ninja-build valgrind git pkg-config doxygen qemu-user unzip cmake 
+RUN apt-get install -y libllvm14 lld-14
+RUN apt-get install -y libllvm15 lld-15
+RUN apt-get install -y libllvm16 lld-16
+RUN apt-get install -y libllvm17 lld-17
+RUN apt-get install -y libllvm18 lld-18
+
+RUN apt-get install -y ninja-build valgrind git pkg-config doxygen graphviz qemu-user unzip cmake 
  
 RUN mkdir -p ~/.ssh && echo "StrictHostKeyChecking no\n" >> ~/.ssh/config
-
