@@ -81,5 +81,7 @@ RUN apt-get install -y libllvm17 lld-17
 RUN apt-get install -y libllvm18 lld-18
 
 RUN apt-get install -y ninja-build valgrind git pkg-config doxygen graphviz qemu-user unzip cmake 
+
+RUN apt-get install -y gdb-multiarch
  
 RUN mkdir -p ~/.ssh && echo "StrictHostKeyChecking no\n" >> ~/.ssh/config
