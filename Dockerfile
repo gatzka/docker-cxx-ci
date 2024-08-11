@@ -1,22 +1,87 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 RUN apt-get update -y && apt-get install -y software-properties-common
 
 RUN apt-get install -y wget curl
-RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key 2>/dev/null | apt-key add -
-RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add -
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
 
-RUN cd /opt && wget -q -O gcc-arm-none-eabi.tar.xz https://developer.arm.com/-/media/Files/downloads/gnu/12.2.mpacbti-rel1/binrel/arm-gnu-toolchain-12.2.mpacbti-rel1-x86_64-arm-none-eabi.tar.xz && tar -xJf gcc-arm-none-eabi.tar.xz && rm gcc-arm-none-eabi.tar.xz
-ENV PATH="/opt/arm-gnu-toolchain-12.2.mpacbti-rel1-x86_64-arm-none-eabi/bin/:${PATH}"
+RUN echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ noble main' | tee /etc/apt/sources.list.d/kitware.list >/dev/null
 
-RUN add-apt-repository ppa:ubuntu-toolchain-r/test
-RUN apt-add-repository 'deb https://apt.kitware.com/ubuntu/ jammy main'
-RUN echo "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-13 main" >> /etc/apt/sources.list.d/llvm.list
-RUN echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-15 main" >> /etc/apt/sources.list.d/llvm.list
+RUN apt-get update -y && apt-get upgrade -y
+RUN apt-get install -y gcc-arm-none-eabi
+RUN apt-get install -y g++-10-arm-linux-gnueabi
+RUN apt-get install -y g++-11-arm-linux-gnueabi
+RUN apt-get install -y g++-12-arm-linux-gnueabi
+RUN apt-get install -y g++-13-arm-linux-gnueabi
+RUN apt-get install -y g++-14-arm-linux-gnueabi
 
-RUN apt-get update -y && apt-get upgrade -y && apt-get install -y ninja-build valgrind git pkg-config doxygen g++-powerpc-linux-gnu g++-powerpc64-linux-gnu g++-arm-linux-gnueabihf g++-aarch64-linux-gnu gcc-riscv64-linux-gnu g++-riscv64-linux-gnu qemu-user unzip cmake openjdk-19-jre-headless nodejs
+RUN apt-get install -y g++-10
+RUN apt-get install -y g++-11
+RUN apt-get install -y g++-12
+RUN apt-get install -y g++-13
+RUN apt-get install -y g++-14
 
-RUN apt-get install -y clang-15 clang-13 clang-tidy-15 clang-tidy-13 clang-format-15 clang-format-13 clang-tools-13 gcc-12 g++-12 libgtest-dev googletest
+RUN apt-get install -y g++-10-aarch64-linux-gnu
+RUN apt-get install -y g++-11-aarch64-linux-gnu
+RUN apt-get install -y g++-12-aarch64-linux-gnu
+RUN apt-get install -y g++-13-aarch64-linux-gnu
+RUN apt-get install -y g++-14-aarch64-linux-gnu
 
-RUN mkdir ~/.ssh && echo "StrictHostKeyChecking no\n" >> ~/.ssh/config
+RUN apt-get install -y g++-10-riscv64-linux-gnu
+RUN apt-get install -y g++-11-riscv64-linux-gnu
+RUN apt-get install -y g++-12-riscv64-linux-gnu
+RUN apt-get install -y g++-13-riscv64-linux-gnu
+RUN apt-get install -y g++-14-riscv64-linux-gnu
 
+RUN apt-get install -y g++-10-powerpc64-linux-gnu
+RUN apt-get install -y g++-11-powerpc64-linux-gnu
+RUN apt-get install -y g++-12-powerpc64-linux-gnu
+RUN apt-get install -y g++-13-powerpc64-linux-gnu
+RUN apt-get install -y g++-14-powerpc64-linux-gnu
+
+RUN apt-get install -y g++-10-powerpc-linux-gnu
+RUN apt-get install -y g++-11-powerpc-linux-gnu
+RUN apt-get install -y g++-12-powerpc-linux-gnu
+RUN apt-get install -y g++-13-powerpc-linux-gnu
+RUN apt-get install -y g++-14-powerpc-linux-gnu
+
+RUN apt-get install -y g++-10-arm-linux-gnueabihf
+RUN apt-get install -y g++-11-arm-linux-gnueabihf
+RUN apt-get install -y g++-12-arm-linux-gnueabihf
+RUN apt-get install -y g++-13-arm-linux-gnueabihf
+RUN apt-get install -y g++-14-arm-linux-gnueabihf
+
+RUN apt-get install -y clang-14
+RUN apt-get install -y clang-15
+RUN apt-get install -y clang-16
+RUN apt-get install -y clang-17
+RUN apt-get install -y clang-18
+
+RUN apt-get install -y clang-tidy-14
+RUN apt-get install -y clang-tidy-15
+RUN apt-get install -y clang-tidy-16
+RUN apt-get install -y clang-tidy-17
+RUN apt-get install -y clang-tidy-18
+
+RUN apt-get install -y clang-format-14
+RUN apt-get install -y clang-format-15
+RUN apt-get install -y clang-format-16
+RUN apt-get install -y clang-format-17
+RUN apt-get install -y clang-format-18
+
+RUN apt-get install -y clang-tools-14
+RUN apt-get install -y clang-tools-15
+RUN apt-get install -y clang-tools-16
+RUN apt-get install -y clang-tools-17
+RUN apt-get install -y clang-tools-18
+
+RUN apt-get install -y libllvm14 lld-14
+RUN apt-get install -y libllvm15 lld-15
+RUN apt-get install -y libllvm16 lld-16
+RUN apt-get install -y libllvm17 lld-17
+RUN apt-get install -y libllvm18 lld-18
+
+RUN apt-get install -y ninja-build valgrind git pkg-config doxygen graphviz qemu-user unzip cmake 
+
+RUN apt-get install -y gdb-multiarch
+ 
+RUN mkdir -p ~/.ssh && echo "StrictHostKeyChecking no\n" >> ~/.ssh/config
